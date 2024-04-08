@@ -1,0 +1,454 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2022 Rockchip Electronics Co., Ltd.
+ */
+
+/dts-v1/;
+
+#include "rv1103.dtsi"
+#include "rv1106-evb.dtsi"
+#include "rv1103-luckfox-pico-ipc.dtsi"
+
+/ {
+	model = "Luckfox Pico";
+	compatible = "rockchip,rv1103g-38x38-ipc-v10", "rockchip,rv1103";
+
+	// gpio1pb2:gpio1pb2 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pb2>;
+	// 	regulator-name = "gpio1_pb2";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pb3:gpio1pb3 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pb3>;
+	// 	regulator-name = "gpio1_pb3";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pc7:gpio1pc7 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pc7>;
+	// 	regulator-name = "gpio1_pc7";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pc6:gpio1pc6 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pc6>;
+	// 	regulator-name = "gpio1_pc6";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pc5:gpio1pc5 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pc5>;
+	// 	regulator-name = "gpio1_pc5";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pc4:gpio1pc4 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pc4>;
+	// 	regulator-name = "gpio1_pc4";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pd2:gpio1pd2 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pd2>;
+	// 	regulator-name = "gpio1_pd2";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pd3:gpio1pd3 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pd3>;
+	// 	regulator-name = "gpio1_pd3";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pa2:gpio1pa2 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pa2>;
+	// 	regulator-name = "gpio1_pa2";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pc0:gpio1pc0 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pc0>;
+	// 	regulator-name = "gpio1_pc0";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pc1:gpio1pc1 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pc1>;
+	// 	regulator-name = "gpio1_pc1";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pc2:gpio1pc2 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pc2>;
+	// 	regulator-name = "gpio1_pc2";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pc3:gpio1pc3 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pc3>;
+	// 	regulator-name = "gpio1_pc3";
+	// 	regulator-always-on;
+	// };
+
+	// gpio0pa4:gpio0pa4 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio0_pa4>;
+	// 	regulator-name = "gpio0_pa4";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pd0:gpio1pd0 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pd0>;
+	// 	regulator-name = "gpio1_pd0";
+	// 	regulator-always-on;
+	// };
+
+	// gpio1pd1:gpio1pd1 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio1_pd1>;
+	// 	regulator-name = "gpio1_pd1";
+	// 	regulator-always-on;
+	// };
+
+	// gpio4pa3:gpio4pa3 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio4_pa3>;
+	// 	regulator-name = "gpio4_pa3";
+	// 	regulator-always-on;
+	// };
+
+	// gpio4pa2:gpio4pa2 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio4_pa2>;
+	// 	regulator-name = "gpio4_pa2";
+	// 	regulator-always-on;
+	// };
+
+	// gpio4pa6:gpio4pa6 {
+	// 	compatible = "regulator-fixed";
+	// 	pinctrl-names = "default";
+	// 	pinctrl-0 = <&gpio4_pa6>;
+	// 	regulator-name = "gpio4_pa6";
+	// 	regulator-always-on;
+	// };
+
+	ili9488 {
+        status = "okay";
+        compatible = "ultrachip,uc8253";
+		pinctrl-names = "default";
+		pinctrl-0 = <&i80_pins>;
+        fps = <30>;
+        buswidth = <8>;
+        debug = <0x7>;
+        db =  <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PB3 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PC7 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PC6 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PC5 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PC4 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PD2 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PD3 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PA2 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PC0 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PC1 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PC2 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PC3 GPIO_ACTIVE_HIGH>,
+        			<&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PD0 GPIO_ACTIVE_HIGH>,
+        			<&gpio1 RK_PD1 GPIO_ACTIVE_HIGH>;
+
+        dc = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;      //RS
+        wr = <&gpio4 RK_PA2 GPIO_ACTIVE_HIGH>;
+        reset = <&gpio4 RK_PA4 GPIO_ACTIVE_HIGH>;    //RES
+	};
+
+};
+/**********GPIO**********/
+&pinctrl {
+	i80 {
+		i80_pins: i80-pins {
+			rockchip,pins =
+				<1 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PB3 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<1 RK_PD1 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<4 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<4 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>,
+				<4 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none_drv_level_0>;
+		};
+	};
+};
+
+
+
+// &pinctrl {
+// 	gpio4-pa2 {
+// 		gpio4_pa2:gpio4-pa2 {
+// 			rockchip,pins =	<4 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+// 		};
+// 	};
+
+// 	gpio4-pa3 {
+// 		gpio4_pa3:gpio4-pa3 {
+// 			rockchip,pins =	<4 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
+// 		};
+// 	};
+
+// 	gpio4-pa4 {
+// 		gpio4_pa4:gpio4-pa4 {
+// 			rockchip,pins =	<4 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
+// 		};
+// 	};
+
+// 	gpio4-pa6 {
+// 		gpio4_pa6:gpio4-pa6 {
+// 			rockchip,pins =	<4 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+// 		};
+// 	};
+
+// 	gpio4-pb0 {
+// 		gpio4_pb0:gpio4-pb0 {
+// 			rockchip,pins =	<4 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
+// 		};
+// 	};
+
+// 	gpio4-pb1 {
+// 		gpio4_pb1:gpio4-pb1 {
+// 			rockchip,pins =	<4 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
+// 		};
+// 	};
+
+// };
+
+
+
+
+
+
+/**********ETH**********/
+&gmac {
+	status = "disabled";
+};
+
+/**********USB**********/
+// &usbdrd {
+// 	status = "disabled";
+// };
+
+// &usbdrd_dwc3 {
+// 	status = "disabled";
+// };
+
+// &u2phy {
+// 	status = "disabled";
+// };
+
+// &u2phy_otg {
+// 	status = "disabled";
+// };
+
+/**********I2C**********/
+// &i2c0 {
+// 	status = "okay";
+// 	pinctrl-0 = <&i2c0m2_xfer>;
+// 	clock-frequency = <100000>;
+// };
+// &i2c3 {
+// 	status = "okay";
+// 	pinctrl-0 = <&i2c3m1_xfer>;
+// 	clock-frequency = <100000>;
+// };
+
+// /**********SPI**********/
+// &spi0 {
+// 	status = "okay";
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&spi0m0_pins>;
+// 	cs-gpios = <&gpio1 RK_PC0 1>;
+// 	// cs-gpios = <&gpio1 26 1>;
+// 	#address-cells = <1>;
+// 	#size-cells = <0>;
+// 	spidev@0 {
+// 		compatible = "rockchip,spidev";
+// 		spi-max-frequency = <1000000000>;
+// 		reg = <0>;
+// 	};
+// };
+// &spi0 {
+//     status = "okay";
+//     pinctrl-names = "default";
+//     pinctrl-0 = <&spi0m0_cs0 &spi0m0_pins>;
+
+//     st7789v@0{
+//         status = "okay";
+//         compatible = "ultrachip,uc8253";
+//         reg = <0>;
+//         spi-max-frequency = <20000000>;
+//         fps = <60>;
+//         buswidth = <8>;
+//         debug = <0x7>;
+//         led-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_LOW>;//BL
+//         dc = <&gpio1 RK_PA2 GPIO_ACTIVE_HIGH>;      //DC
+//         reset = <&gpio1 RK_PC3 GPIO_ACTIVE_LOW>;    //RES
+//     };
+// };
+
+// &pinctrl {
+//     spi0 {
+//         /omit-if-no-ref/
+//         spi0m0_pins: spi0m0-pins {
+//             rockchip,pins =
+//                 /* spi0_clk_m0 */
+//                 <1 RK_PC1 4 &pcfg_pull_none>,
+//                 /* spie_miso_m0 */
+//                 // <1 RK_PC3 6 &pcfg_pull_none>,
+//                 /* spi_mosi_m0 */
+//                 <1 RK_PC2 6 &pcfg_pull_none>;
+//         };
+//     };
+// };
+
+
+// /**********UART**********/
+// &uart2 {
+//  status = "disabled";
+//  pinctrl-names = "default";
+//  pinctrl-0 = <&uart2m1_xfer>;
+// };
+// &uart3 {
+// 	status = "okay";
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&uart3m1_xfer>;
+// };
+// &uart4 {
+// 	status = "okay";
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&uart4m1_xfer>;
+// };
+// &uart5 {
+// 	status = "okay";
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&uart5m0_xfer>;
+// };
+
+/**********PWM**********/
+
+// &pwm0 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm0m0_pins>;
+// 	// pinctrl-0 = <&pwm0m1_pins>;
+// };
+// &pwm1 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm1m0_pins>;
+// 	// pinctrl-0 = <&pwm1m1_pins>;
+// };
+
+// &pwm2 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm2m2_pins>;
+// };
+// &pwm3 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm3m2_pins>;
+// };
+// &pwm4 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm4m2_pins>;
+// };
+// &pwm5 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm5m2_pins>;
+// };
+// &pwm6 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm6m2_pins>;
+// };
+// &pwm7 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm7m2_pins>;
+// };
+// &pwm8 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	// pinctrl-0 = <&pwm8m1_pins>;
+// 	pinctrl-0 = <&pwm8m0_pins>;
+// };
+// &pwm9 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	// pinctrl-0 = <&pwm9m1_pins>;
+// 	pinctrl-0 = <&pwm9m0_pins>;
+// };
+
+// &pwm10 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm10m1_pins>;
+// 	// pinctrl-0 = <&pwm10m2_pins>;
+// 	// pinctrl-0 = <&pwm10m0_pins>;
+// };
+// &pwm11 {
+// 	status = "okay";
+// 	pinctrl-names = "active";
+// 	pinctrl-0 = <&pwm11m1_pins>;
+// 	// pinctrl-0 = <&pwm11m2_pins>;
+// 	// pinctrl-0 = <&pwm11m0_pins>;
+// };
+
+
+
+
