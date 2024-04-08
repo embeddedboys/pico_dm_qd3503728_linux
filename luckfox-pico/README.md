@@ -6,3 +6,9 @@
 -->
 
 # Steps
+
+## Build it yourself
+
+1. setup luckfox pico sdk
+
+## Use our files

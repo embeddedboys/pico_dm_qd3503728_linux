@@ -357,16 +357,9 @@ static int ili9488_request_gpios(struct ili9488_par *par)
     rc = ili9488_request_one_gpio(par, "dc", 0, &par->gpio.dc);
     if (rc)
         return rc;
-    // rc = ili9488_request_one_gpio(par, "led", 0, &par->gpio.blk);
-    // if (rc)
-    //     return rc;
-    // rc = ili9488_request_one_gpio(par, "cs", 0, &par->gpio.cs);
-    // if (rc)
-    //     return rc;
     rc = ili9488_request_one_gpio(par, "wr", 0, &par->gpio.wr);
     if (rc)
         return rc;
-
 
     for (i = 0; i < 16; i++) {
 		rc = ili9488_request_one_gpio(par, "db", i,
@@ -554,9 +547,6 @@ static void update_display(struct ili9488_par *par, unsigned int start_line,
         end_line = par->fbinfo->var.yres - 1;
     }
 
-    // start_line = 0;
-    // end_line = par->fbinfo->var.yres - 1;
-
     /* for each column, refresh dirty rows */
     par->tftops->set_addr_win(par, 0, start_line, par->fbinfo->var.xres - 1, end_line);
 
@@ -701,17 +691,6 @@ static int ili9488_fb_setcolreg(unsigned int regno, unsigned int red,
     /*
     * Program hardware... do anything you want with transp
     */
-
-    /* grayscale works only partially under directcolor */
-    // if (info->var.grayscale) {
-    //     /* grayscale = 0.30*R + 0.59*G + 0.11*B */
-    //     red = green = blue = (red * 77 + green * 151 + blue * 28) >> 8;
-    // }
-
-    // red >>= (16 - info->var.red.length);
-    // green >>= (16 - info->var.green.length);
-    // blue >>= (16 - info->var.blue.length);
-    // transp >>= (16 - info->var.transp.length);
 
     switch (info->fix.visual) {
     case FB_VISUAL_TRUECOLOR:
@@ -923,7 +902,6 @@ static int ili9488_probe(struct platform_device *pdev)
 
 alloc_fail:
     vfree(vmem);
-
     return 0;
 }
 
@@ -996,7 +974,7 @@ static struct platform_driver ili9488_plat_drv = {
 
 module_platform_driver(ili9488_plat_drv);
 
-MODULE_AUTHOR("Iota Hydrae <writeforever@foxmail.com>");
-MODULE_DESCRIPTION("ili9488 based 3/4-wire SPI LCD-TFT display framebuffer driver");
+MODULE_AUTHOR("embeddedboys <writeforever@foxmail.com>");
+MODULE_DESCRIPTION("ili9488 based 16-Bit 8080 LCD-TFT display framebuffer driver");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("platform:ili9488");
