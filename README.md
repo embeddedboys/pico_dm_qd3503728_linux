@@ -1,5 +1,5 @@
 # Pico DM QD3503728 Linux
 
-## Luckfox Pico
-
-## Milk-V Duo
+## TODO list
+- [x] Luckfox Pico
+- [ ] Milk-V Duo
