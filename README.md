@@ -10,4 +10,4 @@ This driver is based on fbtft.
 
 ## TODO list
 - [x] Luckfox Pico
-- [ ] Milk-V Duo
+- [x] Milk-V Duo
