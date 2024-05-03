@@ -1,0 +1,96 @@
+/dts-v1/;
+#include "cv180x_base_riscv.dtsi"
+#include "cv180x_asic_qfn.dtsi"
+#include "cv180x_asic_sd.dtsi"
+#include "cv180x_default_memmap.dtsi"
+
+&mipi_rx{
+	snsr-reset = <&portc 8 GPIO_ACTIVE_LOW>, <&portc 8 GPIO_ACTIVE_LOW>, <&portc 8 GPIO_ACTIVE_LOW>;
+};
+
+&uart0 {
+	status = "disabled";
+};
+
+// &spi2 {
+// 	status = "okay";
+
+// 	spidev@0 {
+// 		status = "okay";
+// 	};
+// };
+
+// &uart4 {
+// 	status = "okay";
+// };
+
+// &i2c1 {
+//        status = "okay";
+//        clock-frequency = <100000>;
+// };
+
+/ {
+	model = "Milk-V Duo";
+
+	ili9488 {
+        status = "okay";
+        compatible = "ultrachip,uc8253";
+		// pinctrl-names = "default";
+		// pinctrl-0 = <&i80_pins>;
+        fps = <30>;
+        buswidth = <16>;
+        // debug = <0x7>;
+        db =  <&porta 28 GPIO_ACTIVE_HIGH>,
+        	  <&porta 29 GPIO_ACTIVE_HIGH>,
+        	  <&porte 26 GPIO_ACTIVE_HIGH>,
+        	  <&porte 25 GPIO_ACTIVE_HIGH>,
+        	  <&porte 19 GPIO_ACTIVE_HIGH>,
+        	  <&porte 20 GPIO_ACTIVE_HIGH>,
+        	  <&porte 23 GPIO_ACTIVE_HIGH>,
+        	  <&porte 22 GPIO_ACTIVE_HIGH>,
+        	  <&porte 21 GPIO_ACTIVE_HIGH>,
+        	  <&porte 18 GPIO_ACTIVE_HIGH>,
+        	  <&portc 9 GPIO_ACTIVE_HIGH>,
+        	  <&portc 10 GPIO_ACTIVE_HIGH>,
+        	  <&porta 16 GPIO_ACTIVE_HIGH>,
+        	  <&porta 17 GPIO_ACTIVE_HIGH>,
+        	  <&porta 14 GPIO_ACTIVE_HIGH>,
+        	  <&porta 15 GPIO_ACTIVE_HIGH>;
+
+        dc = <&porta 27 GPIO_ACTIVE_HIGH>;      //RS
+        wr = <&porta 25 GPIO_ACTIVE_HIGH>;
+        reset = <&porte 4 GPIO_ACTIVE_HIGH>;    //RES
+	};
+	
+	i2c_gpio: i2c-gpio-10 {
+		compatible = "i2c-gpio";
+		sda-gpios = <&portb 3 GPIO_ACTIVE_HIGH>; /* sda */
+		scl-gpios = <&portb 6 GPIO_ACTIVE_HIGH>; /* scl */
+		i2c-gpio,sda-open-drain;
+		i2c-gpio,scl-open-drain;
+		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+		// pinctrl-names = "default";
+		// pinctrl-0 = <&i2c_gpio_pins>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "okay";
+		
+		rtp@38 {
+			compatible = "focaltech,ft6236";
+			reg = <0x38>;
+			interrupt-parent = <&porta>;
+			interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
+			reset-gpios = <&porte 4 GPIO_ACTIVE_HIGH>;    //RES
+        	// reset-gpios = <&gpio2 RK_PA0 GPIO_ACTIVE_LOW>;
+        	// wake-gpios = <&gpio2 RK_PA0 GPIO_ACTIVE_HIGH>;
+        	// pinctrl-names = "default";
+			// pinctrl-0 = <&tp_pins>;
+			wakeup-source;
+			// touchscreen-inverted-x;
+			// touchscreen-inverted-y;
+			// touchscreen-swapped-x-y;
+			status = "okay";
+		};
+	};
+};
+
