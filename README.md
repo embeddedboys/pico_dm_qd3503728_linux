@@ -6,7 +6,7 @@ This driver is based on fbtft.
 
 ## FIXME
 
-- [ ] wrong fb console color
+- [ ] wrong fb console color on the first time.
 
 ## TODO list
 - [x] Luckfox Pico
