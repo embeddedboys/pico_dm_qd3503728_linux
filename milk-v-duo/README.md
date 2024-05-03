@@ -19,11 +19,9 @@
 
 5. insmod and test
 
-6. run lvgl
-
-7. benchmark
-
-avg. 33
-41
-31
-39
+6. build & run lvgl demo
+```bash
+cd /lib
+ln -sf ../usr/lib64v0p7_xthead/lp64d/libc.so ./ld-musl-r
+iscv64xthead.so.1
+```
