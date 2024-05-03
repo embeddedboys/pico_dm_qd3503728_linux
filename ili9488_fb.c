@@ -875,12 +875,12 @@ static int ili9488_probe(struct platform_device *pdev)
         return -ENOMEM;
     }
 
-    par->txbuf.buf = devm_kzalloc(dev, PAGE_SIZE, GFP_KERNEL);
-    if (!par->txbuf.buf) {
-        dev_err(dev, "failed to alloc txbuf!\n");
-        return -ENOMEM;
-    }
-    par->txbuf.len = PAGE_SIZE;
+    // par->txbuf.buf = devm_kzalloc(dev, PAGE_SIZE, GFP_KERNEL);
+    // if (!par->txbuf.buf) {
+    //     dev_err(dev, "failed to alloc txbuf!\n");
+    //     return -ENOMEM;
+    // }
+    // par->txbuf.len = PAGE_SIZE;
 
     par->tftops = &default_ili9488_ops;
     par->display = &display;
