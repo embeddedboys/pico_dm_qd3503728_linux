@@ -360,6 +360,9 @@ static int ili9488_request_gpios(struct ili9488_par *par)
     rc = ili9488_request_one_gpio(par, "wr", 0, &par->gpio.wr);
     if (rc)
         return rc;
+    rc = ili9488_request_one_gpio(par, "led", 0, &par->gpio.blk);
+    if (rc)
+        return rc;
 
     for (i = 0; i < 16; i++) {
 		rc = ili9488_request_one_gpio(par, "db", i,
@@ -430,6 +433,9 @@ static int ili9488_hw_init(struct ili9488_par *par)
 {
     printk("%s, Display Panel initializing ...\n", __func__);
     ili9488_init_display(par);
+
+    if (par->gpio.blk)
+        gpio_put(par->gpio.blk, 1);
     // ili9488_set_var(par);
     // ili9488_set_gamma(par, default_curves);
     // ili9488_clear(par);
@@ -914,6 +920,8 @@ static int ili9488_remove(struct platform_device *pdev)
 
     unregister_framebuffer(par->fbinfo);
     framebuffer_release(par->fbinfo);
+
+    par->tftops->clear(par);
     return 0;
 }
 
