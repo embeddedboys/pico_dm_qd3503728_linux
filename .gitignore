@@ -2,7 +2,6 @@ modules.order
 *.cmd
 *.symvers
 *.mod
-*.ko
 *.mod.c
 *.o
 
