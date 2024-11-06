@@ -6,3 +6,5 @@ modules.order
 *.o
 
 tests/test_fb
+.cache/
+compile_commands.json

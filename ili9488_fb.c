@@ -945,7 +945,7 @@ static int __maybe_unused ili9488_runtime_idle(struct device *dev)
 }
 
 static const struct of_device_id ili9488_dt_ids[] = {
-    { .compatible = "ultrachip,uc8253" },
+    { .compatible = "ilitek,ili9488" },
     { /* KEEP THIS */ },
 };
 MODULE_DEVICE_TABLE(of, ili9488_dt_ids);
