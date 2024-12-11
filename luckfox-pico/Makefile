@@ -5,7 +5,7 @@
 # users kernel dir
 ARCH := arm
 CROSS_COMPILE := /home/developer/sources/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-
-KERN_DIR := /home/developer/sources/luckfox-pico/sysdrv/source/kernel
+KERN_DIR := /home/developer/sources/luckfox-pico/sysdrv/source/objs_kernel
 
 MODULE_NAME = ili9488_fb
 

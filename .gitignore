@@ -4,6 +4,7 @@ modules.order
 *.mod
 *.mod.c
 *.o
+ili9488.ko
 
 tests/test_fb
 .cache/
