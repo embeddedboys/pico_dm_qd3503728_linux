@@ -5,7 +5,7 @@
 # users kernel dir
 ARCH := riscv
 CROSS_COMPILE := /home/developer/sources/duo-buildroot-sdk/host-tools/gcc/riscv64-linux-x86_64/bin/riscv64-unknown-linux-gnu-
-KERN_DIR := /home/developer/sources/duo-buildroot-sdk/linux_5.10
+KERN_DIR := /home/developer/sources/duo-buildroot-sdk/linux_5.10/build/kernel_output
 
 MODULE_NAME = ili9488_fb
 
