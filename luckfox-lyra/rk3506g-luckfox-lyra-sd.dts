@@ -1,0 +1,122 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2024 Rockchip Electronics Co., Ltd.
+ */
+
+/dts-v1/;
+
+#include "rk3506-luckfox-lyra.dtsi"
+
+/ {
+	model = "Luckfox Lyra";
+	compatible = "rockchip,rk3506g-demo-display-control", "rockchip,rk3506";
+
+	chosen {
+		bootargs = "earlycon=uart8250,mmio32,0xff0a0000 console=tty1 console=ttyFIQ0 storagemedia=sd root=/dev/mmcblk0p3 rootfstype=ext4 rootwait snd_aloop.index=7 snd_aloop.use_raw_jiffies=1";
+	};
+
+	ili9488 {
+		status = "okay";
+		compatible = "ilitek,ili9488";
+		pinctrl-names = "default";
+		pinctrl-0 = <&i80_pins>;
+		fps = <30>;
+		buswidth = <8>;
+		debug = <0x7>;
+		db =	<&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PC7 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PB4 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PA1 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PB3 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PB2 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PA7 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PA3 GPIO_ACTIVE_HIGH>,
+				<&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
+
+				dc = <&gpio1 RK_PC2 GPIO_ACTIVE_HIGH>;      //RS
+				wr = <&gpio1 RK_PC3 GPIO_ACTIVE_HIGH>;
+				reset = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;    //RESET
+				led = <&gpio1 RK_PB1 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+/**********GPIO***********/
+&pinctrl{
+	i80 {
+		i80_pins: i80-pins {
+			rockchip,pins =
+				<0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PB4 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PB3 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<1 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<1 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>,
+				<1 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none_drv_level_15>;
+		};
+	};
+};
+
+&i2c2{
+	status = "disabled";
+};
+
+/**********display**********/
+&cma {
+	size = <0x2000000>;
+};
+
+&dsi {
+	status = "disabled";
+};
+
+&dsi_dphy {
+	status = "disabled";
+};
+
+&dsi_in_vop {
+	status = "disabled";
+};
+
+&route_dsi {
+	status = "disabled";
+};
+
+/**********ethernet**********/
+&gmac1 {
+	status = "disabled";
+};
+
+&mdio1 {
+	status = "disabled";
+};
+
+/**********usb**********/
+&usb20_otg0 {
+	dr_mode = "peripheral";
+	status = "okay";
+};
+
+&usb20_otg1 {
+	dr_mode = "host";
+	status = "okay";
+};
