@@ -210,9 +210,9 @@ static int ili9488_init_display(struct ili9488_priv *priv)
     write_reg(priv, 0xB6, 0x02, 0x02, 0x3B);    // Display Function Control
     write_reg(priv, 0xB7, 0xC6);                // Entry Mode Set
     write_reg(priv, 0xF7, 0xA9, 0x51, 0x2C, 0x82);  // Adjust Control 3
-    write_reg(priv, 0x11);                      // Exit Sleep
-    mdelay(60);
-    write_reg(priv, 0x29);                      // Display on
+    // write_reg(priv, 0x11);                      // Exit Sleep
+    // mdelay(60);
+    // write_reg(priv, 0x29);                      // Display on
 
     return 0;
 }
@@ -244,28 +244,28 @@ static int ili9488_set_addr_win(struct ili9488_priv *priv, int xs, int ys, int x
     return 0;
 }
 
-// static int ili9488_idle(struct ili9488_priv *priv, bool on)
-// {
-//     if (on)
-//         write_reg(priv, MIPI_DCS_EXIT_IDLE_MODE);
-//     else
-//         write_reg(priv, MIPI_DCS_EXIT_IDLE_MODE);
+static int ili9488_idle(struct ili9488_priv *priv, bool on)
+{
+    if (on)
+        write_reg(priv, MIPI_DCS_EXIT_IDLE_MODE);
+    else
+        write_reg(priv, MIPI_DCS_EXIT_IDLE_MODE);
 
-//     return 0;
-// }
+    return 0;
+}
 
-// static int ili9488_sleep(struct ili9488_priv *priv, bool on)
-// {
-//     if (on) {
-//         write_reg(priv, MIPI_DCS_SET_DISPLAY_OFF);
-//         write_reg(priv, MIPI_DCS_ENTER_SLEEP_MODE);
-//     } else {
-//         write_reg(priv, MIPI_DCS_EXIT_SLEEP_MODE);
-//         write_reg(priv, MIPI_DCS_SET_DISPLAY_ON);
-//     }
+static int ili9488_sleep(struct ili9488_priv *priv, bool on)
+{
+    if (on) {
+        write_reg(priv, MIPI_DCS_SET_DISPLAY_OFF);
+        write_reg(priv, MIPI_DCS_ENTER_SLEEP_MODE);
+    } else {
+        write_reg(priv, MIPI_DCS_EXIT_SLEEP_MODE);
+        write_reg(priv, MIPI_DCS_SET_DISPLAY_ON);
+    }
 
-//     return 0;
-// }
+    return 0;
+}
 
 static int ili9488_clear(struct ili9488_priv *priv)
 {
@@ -276,12 +276,16 @@ static int ili9488_clear(struct ili9488_priv *priv)
 
     printk("clearing screen(%d x %d) ...\n", width, height);
 
-    ili9488_set_addr_win(priv, 0, 0, width, height);
+    ili9488_idle(priv, false);
+
+    ili9488_set_addr_win(priv, 0, 0, width - 1, height - 1);
 
     gpio_put(priv->gpio.dc, 1);
     for (x = 0; x < width; x++)
         for (y = 0; y < height; y++)
             fbtft_write_gpio16_wr(priv, &clear, sizeof(u16));
+
+    ili9488_idle(priv, true);
 
     return 0;
 }
@@ -291,10 +295,11 @@ static const struct ili9488_operations default_ili9488_ops = {
     .clear = ili9488_clear,
     // .blank = ili9488_blank,
     .reset = ili9488_reset,
-    // .sleep = ili9488_sleep,
+    .sleep = ili9488_sleep,
     .set_addr_win = ili9488_set_addr_win,
 };
 
+// TODO: update gpio request routine, gpios in dts
 static int ili9488_request_one_gpio(struct ili9488_priv *priv,
                                     const char *name, int index,
                                     struct gpio_desc **gpiop)
@@ -312,36 +317,40 @@ static int ili9488_request_one_gpio(struct ili9488_priv *priv,
 #else
     struct device *dev = priv->dev;
     struct device_node *np = dev->of_node;
-    int gpio, flags, rc = 0;
+    int gpio, flags, rc = -1;
     enum of_gpio_flags of_flags;
 
-    if (of_find_property(np, name, NULL)) {
-        gpio = of_get_named_gpio_flags(np, name, index, &of_flags);
-        if (gpio == -ENOENT)
-            return 0;
-        if (gpio == -EPROBE_DEFER)
-            return gpio;
-        if (gpio < 0) {
-            dev_err(dev,
-                    "failed to get '%s' from DT\n", name);
-            return gpio;
-        }
-
-        flags = (of_flags & OF_GPIO_ACTIVE_LOW) ? GPIOF_OUT_INIT_LOW :
-                GPIOF_OUT_INIT_HIGH;
-        rc = devm_gpio_request_one(dev, gpio, flags,
-                                dev->driver->name);
-        if (rc) {
-            dev_err(dev,
-                    "gpio_request_one('%s'=%d) failed with %d\n",
-                    name, gpio, rc);
-            return rc;
-        }
-        if (gpiop)
-            *gpiop = gpio_to_desc(gpio);
-        pr_debug("%s : '%s' = GPIO%d\n",
-                __func__, name, gpio);
+    if (!of_find_property(np, name, NULL)) {
+        dev_err(dev, "can't find the gpio node!\n");
+        return rc;
     }
+
+    gpio = of_get_named_gpio_flags(np, name, index, &of_flags);
+    if (gpio == -ENOENT)
+        return 0;
+    if (gpio == -EPROBE_DEFER)
+        return gpio;
+    if (gpio < 0) {
+        dev_err(dev,
+                "failed to get '%s' from DT\n", name);
+        return gpio;
+    }
+
+    flags = (of_flags & OF_GPIO_ACTIVE_LOW) ? GPIOF_OUT_INIT_HIGH :
+            GPIOF_OUT_INIT_LOW;
+    rc = devm_gpio_request_one(dev, gpio, flags,
+                            dev->driver->name);
+    if (rc) {
+        dev_err(dev,
+                "gpio_request_one('%s'=%d) failed with %d\n",
+                name, gpio, rc);
+        return rc;
+    }
+    if (gpiop)
+        *gpiop = gpio_to_desc(gpio);
+    pr_debug("%s : '%s' = GPIO%d\n",
+            __func__, name, gpio);
+
 
     return rc;
 #endif
@@ -361,14 +370,15 @@ static int ili9488_request_gpios(struct ili9488_priv *priv)
     rc = ili9488_request_one_gpio(priv, "wr", 0, &priv->gpio.wr);
     if (rc)
         return rc;
-    rc = ili9488_request_one_gpio(priv, "led", 0, &priv->gpio.blk);
-    if (rc)
-        return rc;
 
     for (i = 0; i < 16; i++) {
 		rc = ili9488_request_one_gpio(priv, "db", i,
 					     &priv->gpio.db[i]);
     }
+
+    rc = ili9488_request_one_gpio(priv, "led", 0, &priv->gpio.blk);
+    if (rc)
+        return rc;
 
     return 0;
 }
@@ -432,10 +442,9 @@ static int ili9488_of_config(struct ili9488_priv *priv)
 static int ili9488_hw_init(struct ili9488_priv *priv)
 {
     printk("%s, Display Panel initializing ...\n", __func__);
+    gpio_put(priv->gpio.blk, 0);
     ili9488_init_display(priv);
 
-    if (priv->gpio.blk)
-        gpio_put(priv->gpio.blk, 1);
     // ili9488_set_var(priv);
     // ili9488_set_gamma(priv, default_curves);
     // ili9488_clear(priv);
@@ -500,20 +509,14 @@ static enum drm_mode_status ili9488_mode_valid(struct drm_simple_display_pipe *p
     return drm_crtc_helper_mode_valid_fixed(&pipe->crtc, mode, &priv->mode);
 }
 
-static void ili9488_pipe_enable(struct drm_simple_display_pipe *pipe,
-				struct drm_crtc_state *crtc_state,
-				struct drm_plane_state *plane_state)
-{
-    struct ili9488_priv *priv = drm_to_ili9488(pipe->crtc.dev);
-
-    DRM_DEBUG_KMS("\n");
-    ili9488_hw_init(priv);
-    ili9488_clear(priv);
-}
-
 static void ili9488_pipe_disable(struct drm_simple_display_pipe *pipe)
 {
+    struct ili9488_priv *priv = drm_to_ili9488(pipe->crtc.dev);
     DRM_DEBUG_KMS("\n");
+
+    gpiod_set_raw_value(priv->gpio.blk, 0);
+    // ili9488_blank(priv, true);
+    ili9488_sleep(priv, true);
 }
 
 static int ili9488_buf_copy(void *dst, struct drm_framebuffer *fb,
@@ -558,6 +561,8 @@ out_drm_gem_fb_end_cpu_access:
 
 static void ili9488_fb_dirty(struct drm_framebuffer *fb, struct drm_rect *rect)
 {
+   	struct iosys_map map[DRM_FORMAT_MAX_PLANES];
+	struct iosys_map data[DRM_FORMAT_MAX_PLANES];
     struct ili9488_priv *priv = drm_to_ili9488(fb->dev);
     unsigned int height = rect->y2 - rect->y1;
     unsigned int width = rect->x2 - rect->x1;
@@ -566,20 +571,57 @@ static void ili9488_fb_dirty(struct drm_framebuffer *fb, struct drm_rect *rect)
     bool full;
     void *tr;
 
+   	ret = drm_gem_fb_vmap(fb, map, data);
+	if (ret)
+	    return;
+
     full = width == fb->width && height == fb->height;
 
-    tr = priv->tx_buf;
-
-    ret = ili9488_buf_copy(tr, fb, rect, swap);
-    if (ret) {
-        DRM_DEBUG_KMS("err on buffer copy!\n");
-        return;
+    if (!full || swap || fb->format->format == DRM_FORMAT_XRGB8888) {
+        tr = priv->tx_buf;
+        ret = ili9488_buf_copy(tr, fb, rect, swap);
+        if (ret) {
+            DRM_DEBUG_KMS("Framebuffer copy error!\n");
+            return;
+        }
+    } else {
+        tr = data[0].vaddr;
     }
 
-    ili9488_set_addr_win(priv, rect->x1, rect->y1, rect->x2, rect->y2);
+    ili9488_idle(priv, false);
 
-    gpio_put(priv->gpio.dc, 1);
+    ili9488_set_addr_win(priv, rect->x1, rect->y1,
+                        rect->x2 - 1, rect->y2 - 1);
+
+    gpiod_set_value_cansleep(priv->gpio.dc, 1);
     fbtft_write_gpio16_wr(priv, tr, width * height * 2);
+
+    ili9488_idle(priv, true);
+
+    drm_gem_fb_vunmap(fb, map);
+}
+
+static void ili9488_pipe_enable(struct drm_simple_display_pipe *pipe,
+				struct drm_crtc_state *crtc_state,
+				struct drm_plane_state *plane_state)
+{
+    struct ili9488_priv *priv = drm_to_ili9488(pipe->crtc.dev);
+    struct drm_plane_state *state = pipe->plane.state;
+    struct drm_framebuffer *fb = state->fb;
+    struct drm_rect rect = {
+        .x1 = 0,
+        .x2 = fb->width,
+        .y1 = 0,
+        .y2 = fb->height,
+    };
+
+    DRM_DEBUG_KMS("\n");
+    ili9488_hw_init(priv);
+
+    ili9488_fb_dirty(fb, &rect);
+
+    ili9488_sleep(priv, false);
+    gpiod_set_value_cansleep(priv->gpio.blk, 1);
 }
 
 static void ili9488_pipe_update(struct drm_simple_display_pipe *pipe,
@@ -661,10 +703,10 @@ static const struct drm_driver ili9488_drm_driver = {
     .fops = &ili9488_fops,
     DRM_GEM_DMA_DRIVER_OPS_VMAP,
     .name = "ili9488",
-    .desc = "Ilitek ILI9488 DRM Driver",
-    .date = "20250506",
+    .desc = "Ilitek ILI9488 16-bit 8080 bit-bang DRM Driver",
+    .date = "20250511",
     .major = 0,
-    .minor = 1,
+    .minor = 2,
     .patchlevel = 0,
 };
 
@@ -680,7 +722,7 @@ static int ili9488_drm_dev_init_with_formats(struct ili9488_priv *priv,
     struct drm_device *drm = &priv->drm;
     int rc;
 
-    pr_info("%s\n", __func__);
+    DRM_DEBUG_KMS("\n");
 
     rc = drm_mode_config_init(drm);
     if (rc) {
@@ -731,7 +773,7 @@ static int ili9488_drm_dev_init(struct ili9488_priv *priv,
 
     priv->drm.mode_config.preferred_depth = 16;
 
-    pr_info("%s\n", __func__);
+    DRM_DEBUG_KMS("\n");
 
     return ili9488_drm_dev_init_with_formats(priv, funcs, ili9488_formats,
                         ARRAY_SIZE(ili9488_formats), mode, bufsize);
@@ -745,7 +787,7 @@ static int ili9488_probe(struct platform_device *pdev)
     struct drm_device *drm;
     int ret;
 
-    printk("%s\n", __func__);
+    DRM_DEBUG_KMS("\n");
 
     priv = devm_drm_dev_alloc(dev, &ili9488_drm_driver, struct ili9488_priv, drm);
     if (IS_ERR(priv)) {
@@ -790,7 +832,8 @@ static int ili9488_remove(struct platform_device *pdev)
 {
     struct ili9488_priv *priv = platform_get_drvdata(pdev);
     struct drm_device *drm = &priv->drm;
-    printk("%s\n", __func__);
+
+    DRM_DEBUG_KMS("\n");
 
     drm_dev_unplug(drm);
     drm_atomic_helper_shutdown(drm);
@@ -828,6 +871,6 @@ static struct platform_driver ili9488_plat_drv = {
 module_platform_driver(ili9488_plat_drv);
 
 MODULE_AUTHOR("Zheng Hua <hua.zheng@embeddedboys.com>");
-MODULE_DESCRIPTION("ili9488 based 16-Bit 8080 bitbang LCD-TFT display DRM driver");
+MODULE_DESCRIPTION("ili9488 based 16-Bit 8080 bit-bang LCD-TFT display DRM driver");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("platform:ili9488");
